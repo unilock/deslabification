@@ -1,0 +1,22 @@
+modLoader = "lowcodefml"
+loaderVersion = "[1,)"
+license = "MIT"
+issueTrackerURL = "https://github.com/unilock/deslabification/issues"
+
+[[mods]]
+modId = "deslabification"
+version = "${version}"
+displayName = "Deslabification"
+displayURL = "https://github.com/unilock/deslabification"
+authors = "unilock"
+description = '''Automatically adds recipes to convert slabs back to blocks'''
+
+[[mixins]]
+config = "deslabification.mixins.json"
+
+[[dependencies.deslabification]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.4,)"
+ordering = "NONE"
+side = "BOTH"

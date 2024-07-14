@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "deslabification",
+  "version": "${version}",
+  "name": "Deslabification",
+  "description": "Automatically adds recipes to convert slabs back to blocks",
+  "authors": [
+    "unilock"
+  ],
+  "contact": {
+    "sources": "https://github.com/unilock/deslabification",
+    "issues": "https://github.com/unilock/deslabification/issues"
+  },
+  "license": "MIT",
+  "environment": "*",
+  "mixins": [
+    "deslabification.mixins.json"
+  ],
+  "depends": {
+    "minecraft": ">=1.20.4"
+  }
+}
