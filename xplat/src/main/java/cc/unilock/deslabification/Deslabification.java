@@ -1,6 +1,7 @@
 package cc.unilock.deslabification;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
@@ -14,15 +15,15 @@ import java.util.Map;
 public class Deslabification {
     public static final String MOD_ID = "deslabification";
 
-    public static void process(Map<RecipeType<?>, ImmutableMap.Builder<ResourceLocation, RecipeHolder<?>>> map, ImmutableMap.Builder<ResourceLocation, RecipeHolder<?>> builder, RecipeHolder<?> holder) {
+    public static void process(ImmutableMultimap.Builder<RecipeType<?>, RecipeHolder<?>> builder1, ImmutableMap.Builder<ResourceLocation, RecipeHolder<?>> builder2, RecipeHolder<?> holder) {
         if (holder.value() instanceof ShapedRecipe recipe && recipe.getResultItem(null).getItem() instanceof BlockItem bi && bi.getBlock() instanceof SlabBlock slab && recipe.getResultItem(null).getCount() == 6) {
             List<Ingredient> ingredients = recipe.getIngredients().stream().filter(i -> !i.isEmpty()).toList();
-            if (ingredients.size() == 3 && ingredients.stream().allMatch(ingredients.get(0)::equals)) {
-                ItemStack input = ingredients.get(0).getItems()[0];
+            if (ingredients.size() == 3 && ingredients.stream().allMatch(ingredients.getFirst()::equals)) {
+                ItemStack input = ingredients.getFirst().getItems()[0];
 
                 ResourceLocation blockId = BuiltInRegistries.ITEM.getKey(input.getItem());
                 ResourceLocation slabId = BuiltInRegistries.BLOCK.getKey(slab);
-                ResourceLocation recipeId = new ResourceLocation(MOD_ID, blockId.getNamespace()+"_"+blockId.getPath() + "/" +slabId.getNamespace()+"_"+slabId.getPath());
+                ResourceLocation recipeId = ResourceLocation.fromNamespaceAndPath(MOD_ID, blockId.getNamespace()+"_"+blockId.getPath() + "/" +slabId.getNamespace()+"_"+slabId.getPath());
 
                 RecipeHolder<ShapedRecipe> recipeHolder = new RecipeHolder<>(recipeId, new ShapedRecipe(
                         "",
@@ -37,8 +38,8 @@ public class Deslabification {
                         input
                 ));
 
-                map.computeIfAbsent(RecipeType.CRAFTING, p -> ImmutableMap.builder()).put(recipeId, recipeHolder);
-                builder.put(recipeId, recipeHolder);
+                builder1.put(RecipeType.CRAFTING, recipeHolder);
+                builder2.put(recipeId, recipeHolder);
             }
         }
     }

@@ -2,6 +2,7 @@ package cc.unilock.deslabification.mixin;
 
 import cc.unilock.deslabification.Deslabification;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMultimap;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -12,12 +13,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Map;
-
 @Mixin(RecipeManager.class)
 public abstract class RecipeManagerMixin {
-    @Inject(method = "lambda$apply$1", at = @At("HEAD"))
-    private static void lambda(CallbackInfo ci, @Local(argsOnly = true) Map<RecipeType<?>, ImmutableMap.Builder<ResourceLocation, RecipeHolder<?>>> map, @Local(argsOnly = true) ImmutableMap.Builder<ResourceLocation, RecipeHolder<?>> builder, @Local(argsOnly = true) RecipeHolder<?> holder) {
-        Deslabification.process(map, builder, holder);
+    @Inject(method = "lambda$apply$0", at = @At(value = "INVOKE_ASSIGN", target = "net/minecraft/world/item/crafting/RecipeHolder.<init>(Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/world/item/crafting/Recipe;)V", shift = At.Shift.AFTER))
+    private static void lambda(CallbackInfo ci, @Local(argsOnly = true) ImmutableMultimap.Builder<RecipeType<?>, RecipeHolder<?>> builder1, @Local(argsOnly = true) ImmutableMap.Builder<ResourceLocation, RecipeHolder<?>> builder2, @Local(ordinal = 0) RecipeHolder<?> holder) {
+        Deslabification.process(builder1, builder2, holder);
     }
 }

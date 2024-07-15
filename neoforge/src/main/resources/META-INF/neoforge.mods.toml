@@ -16,7 +16,7 @@ config = "deslabification.mixins.json"
 
 [[dependencies.deslabification]]
 modId = "minecraft"
-mandatory = true
-versionRange = "[1.20.3,)"
+type = "required"
+versionRange = "[1.21,)"
 ordering = "NONE"
 side = "BOTH"
