@@ -9,6 +9,7 @@ version = "${version}"
 displayName = "Deslabification"
 displayURL = "https://github.com/unilock/deslabification"
 authors = "unilock"
+displayTest = "IGNORE_SERVER_VERSION"
 description = '''Automatically adds recipes to convert slabs back to blocks'''
 
 [[mixins]]
