@@ -17,6 +17,6 @@
     "deslabification.mixins.json"
   ],
   "depends": {
-    "minecraft": ">=1.20.3"
+    "minecraft": ">=1.20"
   }
 }
