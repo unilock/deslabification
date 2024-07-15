@@ -15,9 +15,9 @@ import java.util.Map;
 public class Deslabification {
     public static final String MOD_ID = "deslabification";
 
-    public static void process(ImmutableMultimap.Builder<RecipeType<?>, RecipeHolder<?>> builder1, ImmutableMap.Builder<ResourceLocation, RecipeHolder<?>> builder2, RecipeHolder<?> holder) {
-        if (holder.value() instanceof ShapedRecipe recipe && recipe.getResultItem(null).getItem() instanceof BlockItem bi && bi.getBlock() instanceof SlabBlock slab && recipe.getResultItem(null).getCount() == 6) {
-            List<Ingredient> ingredients = recipe.getIngredients().stream().filter(i -> !i.isEmpty()).toList();
+    public static void process(ImmutableMultimap.Builder<RecipeType<?>, RecipeHolder<?>> builder1, ImmutableMap.Builder<ResourceLocation, RecipeHolder<?>> builder2, Recipe<?> recipe) {
+        if (recipe instanceof ShapedRecipe shaped && shaped.getResultItem(null).getItem() instanceof BlockItem bi && bi.getBlock() instanceof SlabBlock slab && shaped.getResultItem(null).getCount() == 6) {
+            List<Ingredient> ingredients = shaped.getIngredients().stream().filter(i -> !i.isEmpty()).toList();
             if (ingredients.size() == 3 && ingredients.stream().allMatch(ingredients.getFirst()::equals)) {
                 ItemStack input = ingredients.getFirst().getItems()[0];
 
