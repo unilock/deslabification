@@ -8,18 +8,26 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.SlabBlock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
 
 public class Deslabification {
     public static final String MOD_ID = "deslabification";
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static void process(Map<RecipeType<?>, ImmutableMap.Builder<ResourceLocation, Recipe<?>>> map, ImmutableMap.Builder<ResourceLocation, Recipe<?>> builder, Recipe<?> recipe) {
         if (recipe instanceof ShapedRecipe shaped && shaped.getResultItem(null).getItem() instanceof BlockItem bi && bi.getBlock() instanceof SlabBlock slab && shaped.getResultItem(null).getCount() == 6) {
             List<Ingredient> ingredients = shaped.getIngredients().stream().filter(i -> !i.isEmpty()).toList();
             if (ingredients.size() == 3 && ingredients.stream().allMatch(ingredients.get(0)::equals)) {
-                ItemStack input = ingredients.get(0).getItems()[0];
+                ItemStack[] inputs = ingredients.get(0).getItems();
+                if (inputs.length == 0) {
+                    LOGGER.error("[Deslabification] Attempted to process suspicious block-to-slab recipe, it will be skipped: "+recipe.getId());
+                    return;
+                }
+                ItemStack input = inputs[0];
 
                 ResourceLocation blockId = BuiltInRegistries.ITEM.getKey(input.getItem());
                 ResourceLocation slabId = BuiltInRegistries.BLOCK.getKey(slab);
