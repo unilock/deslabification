@@ -18,13 +18,13 @@ public class Deslabification {
     public static final String MOD_ID = "deslabification";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    public static void process(ImmutableMultimap.Builder<RecipeType<?>, RecipeHolder<?>> builder1, ImmutableMap.Builder<ResourceLocation, RecipeHolder<?>> builder2, Recipe<?> recipe) {
+    public static void process(ImmutableMultimap.Builder<RecipeType<?>, RecipeHolder<?>> builder1, ImmutableMap.Builder<ResourceLocation, RecipeHolder<?>> builder2, ResourceLocation blockToSlabId, Recipe<?> recipe) {
         if (recipe instanceof ShapedRecipe shaped && shaped.getResultItem(null).getItem() instanceof BlockItem bi && bi.getBlock() instanceof SlabBlock slab && shaped.getResultItem(null).getCount() == 6) {
             List<Ingredient> ingredients = shaped.getIngredients().stream().filter(i -> !i.isEmpty()).toList();
             if (ingredients.size() == 3 && ingredients.stream().allMatch(ingredients.getFirst()::equals)) {
                 ItemStack[] inputs = ingredients.getFirst().getItems();
                 if (inputs.length == 0) {
-                    LOGGER.error("[Deslabification] Attempted to process suspicious block-to-slab recipe, it will be skipped: "+recipe.getId());
+                    LOGGER.error("[Deslabification] Attempted to process suspicious block-to-slab recipe, it will be skipped: "+blockToSlabId.toString());
                     return;
                 }
                 ItemStack input = inputs[0];

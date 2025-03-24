@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(RecipeManager.class)
 public abstract class RecipeManagerMixin {
     @Inject(method = "lambda$apply$0", at = @At(value = "NEW", target = "net/minecraft/world/item/crafting/RecipeHolder"))
-    private static void lambda(CallbackInfo ci, @Local(argsOnly = true) ImmutableMultimap.Builder<RecipeType<?>, RecipeHolder<?>> builder1, @Local(argsOnly = true) ImmutableMap.Builder<ResourceLocation, RecipeHolder<?>> builder2, @Local(ordinal = 0) Recipe<?> recipe) {
-        Deslabification.process(builder1, builder2, recipe);
+    private static void lambda(CallbackInfo ci, @Local(argsOnly = true) ImmutableMultimap.Builder<RecipeType<?>, RecipeHolder<?>> builder1, @Local(argsOnly = true) ImmutableMap.Builder<ResourceLocation, RecipeHolder<?>> builder2, @Local(argsOnly = true) ResourceLocation resourcelocation, @Local(ordinal = 0) Recipe<?> recipe) {
+        Deslabification.process(builder1, builder2, resourcelocation, recipe);
     }
 }
